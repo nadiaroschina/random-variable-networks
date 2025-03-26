@@ -18,19 +18,20 @@ def build_threshold_graph(vertices, edge_weights, threshold):
 
 
 def find_max_clique(g):
-    max_clique = []
+    max_cliques = []
     max_weight = 0
     for clique in nx.algorithms.clique.enumerate_all_cliques(g):
         if len(clique) > 1:
             weight = sum(g[u][v]['weight'] for u, v in nx.utils.pairwise(clique))
             if weight > max_weight:
                 max_weight = weight
-                max_clique = [clique]
+                max_cliques = [g.subgraph(clique).copy()]
             elif weight == max_weight:
-                max_clique.append(clique)
-    return max_clique
+                max_cliques.append(g.subgraph(clique).copy())
+    if len(max_cliques) > 1:
+        raise Exception('технически непонятно что делать в этом случае, вероятность такого события около нуля')
+    return max_cliques[0]
 
 
 def find_max_independent_set(g):
-    return nx.algorithms.maximal_independent_set(g)
-
+    return g.subgraph(nx.algorithms.maximal_independent_set(g)).copy()
