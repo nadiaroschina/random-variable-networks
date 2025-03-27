@@ -30,7 +30,7 @@ def find_max_clique(g):
                 max_cliques.append(g.subgraph(clique).copy())
     if len(max_cliques) > 1:
         raise Exception('технически непонятно что делать в этом случае, вероятность такого события около нуля')
-    return max_cliques[0]
+    return max_cliques[0] if max_cliques else nx.Graph()
 
 
 def find_max_independent_set(g):
