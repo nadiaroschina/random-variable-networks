@@ -1,20 +1,19 @@
-import pandas as pd
-from scipy.stats import pearsonr, kendalltau
-
 def compute_pearson_correlation(df):
-    correlations = {}
-    for col1 in df.columns:
-        for col2 in df.columns:
+    edge_weights = {}
+    correlation_matrix = df.corr(method='pearson')
+    for col1 in correlation_matrix.columns:
+        for j, col2 in enumerate(correlation_matrix.columns):
             if col1 != col2:
-                correlations[(col1, col2)] = pearsonr(df[col1], df[col2]).statistic
-    return correlations
+                    edge_weights[(col1, col2)] = correlation_matrix[col1][j]
+    return edge_weights
 
 
 def compute_kendall_correlation(df):
-    correlations = {}
-    for col1 in df.columns:
-        for col2 in df.columns:
+    edge_weights = {}
+    correlation_matrix = df.corr(method='kendall')
+    for col1 in correlation_matrix.columns:
+        for j, col2 in enumerate(correlation_matrix.columns):
             if col1 != col2:
-                correlations[(col1, col2)] = kendalltau(df[col1], df[col2]).statistic
-    return correlations
+                    edge_weights[(col1, col2)] = correlation_matrix[col1][j]
+    return edge_weights
 
